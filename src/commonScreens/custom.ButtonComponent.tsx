@@ -54,20 +54,14 @@ export const CustomButtonStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderRadius: 5,
+    borderRadius: 1,
     backgroundColor: '#727fad'
   },
   title: StyleSheet.flatten([
-    FontStyles.fontW6,
     {
-      height: 16,
-      fontSize: 16,
-      lineHeight: Platform.select({
-        ios: 0,
-        android: 18
-      }),
-      textAlign: 'left',
-      color: '#FFFFFF'
+      fontSize: 14,
+      color: '#FFFFFF',
+      fontFamily: 'Unica One'
     }
   ])
 })

@@ -23,6 +23,14 @@ interface ISignInActionResponseProps extends ISignInActionResponseComponentState
 }
 interface ILoginState {}
 
+type NameType = 'emailId'
+type FormState = { [name in NameType]: string }
+type TextInputField = React.Component<TextInputProperties, React.ComponentState> & TextInputStatic
+
+interface ILoginState {
+  form: FormState
+}
+
 export class SignInActionResponse extends React.Component<ISignInActionResponseProps, ILoginState> {
   // Navigation options
   static get options() {
@@ -35,29 +43,74 @@ export class SignInActionResponse extends React.Component<ISignInActionResponseP
     }
   }
 
-  constructor(props: ISignInActionResponseProps) {
-    super(props)
+  private formRef: { [name in keyof FormState]: TextInputField | null } = {
+    emailId: null
   }
 
-  closeModal = () => {
+  constructor(props: ISignInActionResponseProps) {
+    super(props)
+    this.state = {
+      form: {
+        emailId: ''
+      }
+    }
+  }
+
+  closePage = () => {
     // alert('closeModal')
     Navigation.dismissModal(this.props.componentId);
   }
 
+  onSignIn = () => {
+
+  }
+
+  private onChangeLoginIdTextinput = (text: string) => {
+    this.setState({
+      form: {
+        emailId: text
+      }
+    })
+  }
+
 
   public render() {
+    const {emailId} = this.state.form
 
     return (
-      <View style={[ { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
-        <Text>Popup View</Text>
-        <TouchableHighlight onPress={this.closeModal} underlayColor='#FFFFFF00'>
-        <Text
-          style={{ height: 44, width: 150, fontFamily: 'Unica One', fontSize: 30, textAlign: 'center'}}
-        >
-            Close model
-        </Text>
-      </TouchableHighlight>
-
+      <View style={[ { flex: 1, backgroundColor: '#666666C9' }]}>
+        <View style={{flex: 1, marginVertical: 59, marginHorizontal: 16, justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 30, backgroundColor: '#FFFFFF'}}>
+          <Text style={{marginTop: 64}}>FORGOT PASSWORD</Text>
+          <Text style={{marginTop: 40}}>We will send you an email to reset your password to the following email ID:</Text>
+          <TextInput
+              ref={(refObj: TextInputField) => {
+                this.formRef.emailId = refObj
+              }}
+              style={[SignInStyle.textInput, {marginTop: 64}]}
+              placeholder='Password'
+              secureTextEntry={true}
+              onChangeText={this.onChangeLoginIdTextinput}
+              value={emailId}
+              maxLength={100}
+              returnKeyType='done'
+              returnKeyLabel='Done'
+              onSubmitEditing={this.onSignIn}
+              blurOnSubmit={true}
+            />
+          <View style={SignInStyle.textInputUnderline} />
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <Image style={{height: 55, width: 55}} source={require('../res/images/icon__loading_indicator_normal.svg')} />
+          </View>
+          <CustomButton disabled={false} buttonStyle={{marginTop: 0}} title='Send' onPressAction={this.onSignIn} />
+          <CustomButton disabled={false} buttonStyle={{marginTop: 24, marginBottom: 40}} title='Sign In' onPressAction={this.onSignIn} />
+          <TouchableHighlight 
+            style={{position: 'absolute', top: 16, right: 16,  height: 24, width: 24}}
+            onPress={this.closePage}
+            underlayColor= '#FFFFFF00'
+          >
+            <Image style={{height: 24, width: 24}} source={require('../res/images/icon__close_normal.svg')} />
+          </TouchableHighlight>
+        </View>
       </View>
     )
   }

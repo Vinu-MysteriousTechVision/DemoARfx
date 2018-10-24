@@ -2,7 +2,9 @@ import { Navigation } from 'react-native-navigation'
 import { Provider } from 'react-redux'
 import { Store } from 'redux'
 import { RootState } from '../../reducer'
+import { FeedContainer as FeedScreenContainer } from '../feed.container'
 import { HomeContainer as HomeScreenContainer } from '../home.container'
+
 import { screenName } from './screen-name'
 
 export const register = (store: Store<RootState>, provider: typeof Provider) => {
@@ -10,6 +12,12 @@ export const register = (store: Store<RootState>, provider: typeof Provider) => 
     screenName.HOME,
     () => HomeScreenContainer,
     provider,
-    store,
+    store
+  )
+  Navigation.registerComponentWithRedux(
+    screenName.FEED,
+    () => FeedScreenContainer,
+    provider,
+    store
   )
 }

@@ -8,7 +8,7 @@ import {
   TextInputProperties,
   TextInputStatic,
   TouchableHighlight,
-  View
+  View,
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Navigation } from 'react-native-navigation'
@@ -29,7 +29,9 @@ export interface ISignInComponentDispatchProps {
   onSocialLoginAction: (socialLoginId: SocialLogin) => void
 }
 
-interface ISignInProps extends ISignInComponentStateProps, ISignInComponentDispatchProps {}
+interface ISignInProps extends ISignInComponentStateProps, ISignInComponentDispatchProps {
+  componentId: any
+}
 
 type NameType = 'loginId' | 'password'
 type FormState = { [name in NameType]: string }
@@ -92,6 +94,12 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
     this.onSignIn = this.onSignIn.bind(this)
     this.onSocialLogin = this.onSocialLogin.bind(this)
   }
+
+  closePage = () => {
+    Navigation.dismissModal(this.props.componentId);
+  }
+
+  componentDidMount() {}
 
   private isAllFormFieldValid = (loginId: string, password: string): boolean => {
     // NOTE Check the presence of login Id and password in the field
@@ -200,41 +208,41 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
     TextInputState.blurTextInput(TextInputState.currentlyFocusedField())
 
     const { loginId, password } = this.state.form
-    if (!this.isFillAllRequiredField || !this.isAllFormFieldValid(loginId, password)) {
-      Navigation.showModal({
-        stack: {
-          children: [{
-            component: {
-              name: 'SIGN_IN_ACTION_RESPONSE',
-              passProps: {
-                text: 'stack with one child'
-              },
-              options: {
-                layout: {
-                  backgroundColor: 'transparent',
-                  orientation: ['portrait', 'landscape'] // An array of supported orientations
+    if (this.isFillAllRequiredField) {
+      if (!this.isAllFormFieldValid(loginId, password)) {
+        Navigation.showModal({
+          stack: {
+            children: [{
+              component: {
+                name: 'SIGN_IN_ACTION_RESPONSE',
+                passProps: {
+                  text: 'stack with one child'
                 },
-                modalPresentationStyle: 'overCurrentContext',
-                topBar: {
-                  title: {
-                    text: 'Modal'
+                options: {
+                  layout: {
+                    backgroundColor: 'transparent'
+                  },
+                  modalPresentationStyle: 'overCurrentContext',
+                  topBar: {
+                    title: {
+                      text: 'Modal'
+                    }
                   }
                 }
               }
-            }
-          }]
-        }
-      })
-      return
-    }
-    this.props.onSignInAction(loginId, password)
-
-    this.setState({
-      form: {
-        loginId: '',
-        password: ''
+            }]
+          }
+        })
+      } else {
+        this.props.onSignInAction(loginId, password)
+        this.setState({
+          form: {
+            loginId: '',
+            password: ''
+          }
+        })    
       }
-    })
+    }
   }
 
   private onSocialLogin(id: any) {
@@ -250,7 +258,6 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
         {/* <StatusBar backgroundColor='#1A2A39' barStyle='light-content'/> */}
         <View style={{ backgroundColor: '#FFFFFF', height: Utils.getStatusBarHeight()}}/>
         <KeyboardAwareScrollView
-          style={SignInStyle.container}
           scrollEnabled={true}
           enableAutomaticScroll={true}
           showsVerticalScrollIndicator={false}
@@ -295,6 +302,7 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
             <View style={SignInStyle.textInputUnderline} />
             <Text style={{ height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.Password)}</Text>
             <CustomButton disabled={false} buttonStyle={{marginTop: 64}} title='Sign In' onPressAction={this.onSignIn} />
+            <Text style={{ height: 30, alignSelf: 'flex-start', color: '#4086D6', marginTop: 16, fontSize: 14, fontFamily: 'Roboto-Regular'}}>Forgot password</Text>
           </View>
           <View style={SignInStyle.signInWithContainer}>
             <Text style={SignInStyle.signInWithTitle}>Sign In With</Text>
@@ -316,6 +324,13 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
               <Text style={{color: '#FFFFFF'}}>SignUpActionContainer</Text>
             </View>
           </View>
+          <TouchableHighlight 
+            style={{position: 'absolute', top: 16, right: 16,  height: 24, width: 24}}
+            onPress={this.closePage}
+            underlayColor= '#FFFFFF00'
+          >
+            <Image style={{height: 24, width: 24}} source={require('../res/images/icon__close_normal.svg')} />
+          </TouchableHighlight>
         </KeyboardAwareScrollView>
       </View>
     )

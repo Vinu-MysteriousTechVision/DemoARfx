@@ -1,14 +1,9 @@
 import { Platform, StatusBar } from 'react-native'
 
-
 function getStatusBarHeight() {
   let statusBarHeight: number = 0
   if (Platform.OS === 'android') {
-    if (Platform.Version >= 21) {
-      statusBarHeight = StatusBar.currentHeight || 0
-    } else {
-      statusBarHeight = 0
-    }
+    statusBarHeight = (Platform.Version >= 21) ? StatusBar.currentHeight || 0 : 0
   } else {
     statusBarHeight = 20
   }

@@ -31,7 +31,6 @@ const mapDispatchToProps: MapDispatchToProps<ISignInComponentDispatchProps, OwnP
     dispatch(actions.loginRequest(loginId, password))
   },
   onSocialLoginAction: (socialLoginId: SocialLogin) => {
-    // alert(socialLoginId)
     alert('socialLoginId: ' + socialLoginId)
   }
 })

@@ -1,4 +1,5 @@
 import { Dimensions, Platform, StyleSheet } from 'react-native'
+import { Utils } from '../../utils/utils'
 
 const windowWidth = Dimensions.get('window').width // full width
 const windowHeight = Dimensions.get('window').height // full height
@@ -12,21 +13,22 @@ export const SignInStyle = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingTop: 64,
+        paddingTop: (64 - Utils.getStatusBarHeight()),
         marginHorizontal: 48
     },
     signInWithContainer: {
-        marginHorizontal: 64,
-        justifyContent: 'center'
+        width: (windowWidth - 128)
     },
     signInWithTitle: {
         alignSelf: 'center',
-        fontFamily: 'Unica One',
-        fontWeight: 'normal'
+        fontFamily: 'Roboto',
+        fontWeight: 'bold',
+        fontSize: 12,
+        marginTop: 34,
+        color: '#444444'
     },
     socialLoginContainer: {
         marginTop: 48,
-        marginBottom: 72,
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: '#FFF'
@@ -42,10 +44,14 @@ export const SignInStyle = StyleSheet.create({
         width: 37
     },
     socialLoginName: {
-        marginTop: 16, fontSize: 12
+        marginTop: 16,
+        fontSize: 12,
+        fontFamily: 'Unica One',
+        color: '#444444'
     },
     signUpActionContainer: {
         flexDirection: 'row',
+        marginTop: 72,
         height: 56,
         backgroundColor: '#727fad',
         justifyContent: 'flex-start',
