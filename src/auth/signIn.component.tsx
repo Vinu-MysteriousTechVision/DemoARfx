@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   // Image,
   Keyboard,
+  StatusBar,
   Text,
   TextInput,
   TextInputProperties,
@@ -10,11 +10,13 @@ import {
   TouchableHighlight,
   View
 } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Navigation } from 'react-native-navigation'
 import Image from 'react-native-remote-svg'
 
 import {CustomButton} from '../commonScreens/custom.ButtonComponent'
 import { SocialLogin } from '../constants'
+import { Utils } from '../utils/utils'
 import {isValidEmail, isValidPassword} from '../utils/validator'
 import {SignInStyle} from './style'
 
@@ -244,76 +246,78 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
     const { loginId, password } = this.state.form
 
     return (
-      <KeyboardAwareScrollView
-        scrollEnabled={true}
-        enableAutomaticScroll={true}
-        showsVerticalScrollIndicator={false}
-        // style={LoginStyle.container}
-        contentContainerStyle={{ alignItems: 'center' }}
-        keyboardShouldPersistTaps={'always'}
-        enableOnAndroid={true}
-      >
       <View style={SignInStyle.container}>
-      <View style={SignInStyle.signInFormContainer}>
-        <Text style={{fontSize: 24, color: '#474746', fontFamily: 'Unica One', fontWeight: 'normal'}}>Sign In</Text>
-        <TextInput
-          ref={(refObj: TextInputField) => {
-            this.formRef.loginId = refObj
-          }}
-          style={[SignInStyle.textInput, {marginTop: 64}]}
-          placeholder='Email address'
-          onChangeText={this.onChangeLoginIdTextinput}
-          value={loginId}
-          maxLength={100}
-          returnKeyType='next'
-          returnKeyLabel='Next'
-          keyboardType='email-address'
-          blurOnSubmit={false}
-          onSubmitEditing={this.focusNextField(this.formRef.password)}
-        />
-        <View style={SignInStyle.textInputUnderline} />
-        <Text style={{height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.LoginId)}</Text>
-        <TextInput
-          ref={(refObj: TextInputField) => {
-            this.formRef.password = refObj
-          }}
-          style={[SignInStyle.textInput, {marginTop: 48}]}
-          placeholder='Password'
-          secureTextEntry={true}
-          onChangeText={this.onChangePWDTextinput}
-          value={password}
-          maxLength={255}
-          returnKeyType='done'
-          returnKeyLabel='Done'
-          onSubmitEditing={this.onSignIn}
-          blurOnSubmit={true}
-        />
-        <View style={SignInStyle.textInputUnderline} />
-        <Text style={{ height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.Password)}</Text>
-        <CustomButton disabled={false} buttonStyle={{marginTop: 64}} title='Sign In' onPressAction={this.onSignIn} />
-      </View>
-      <View style={SignInStyle.signInWithContainer}>
-        <Text style={SignInStyle.signInWithTitle}>Sign In With</Text>
-        <View style={SignInStyle.socialLoginContainer} >
-          <SocialLoginButtonComponent buttonId={SocialLogin.Facebook} title='Facebook' icon={require('../res/images/facebook.png')} onButtonAction={this.onSocialLogin}/>
-          <SocialLoginButtonComponent buttonId={SocialLogin.Google} title='Google' icon={require('../res/images/google.png')} onButtonAction={this.onSocialLogin}/>
-          <SocialLoginButtonComponent buttonId={SocialLogin.Twitter} title='Twitter' icon={require('../res/images/twitter.png')} onButtonAction={this.onSocialLogin}/>
-        </View>
-      </View>
-      <View style={SignInStyle.signUpActionContainer}>
-        <TouchableHighlight
-          style={{ width: 50, height: 56, justifyContent: 'center', alignItems: 'center'}}
-          onPress={() =>{alert('message')}}
-          underlayColor='#FFFFFF00'
+        {/* <StatusBar backgroundColor='#1A2A39' barStyle='light-content'/> */}
+        <View style={{ backgroundColor: '#FFFFFF', height: Utils.getStatusBarHeight()}}/>
+        <KeyboardAwareScrollView
+          style={SignInStyle.container}
+          scrollEnabled={true}
+          enableAutomaticScroll={true}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ alignItems: 'center' }}
+          keyboardShouldPersistTaps={'always'}
+          enableOnAndroid={true}
         >
-          <Image style={{height: 24, width: 24}} source={require('../res/images/icon__switch_page_normal.svg')} />
-        </TouchableHighlight>
-        <View style={{ flex: 1, height: 56, justifyContent: 'center', alignItems: 'center'}} >
-          <Text style={{color: '#FFFFFF'}}>SignUpActionContainer</Text>
-        </View>
+          <View style={SignInStyle.signInFormContainer}>
+            <Text style={{fontSize: 24, color: '#474746', fontFamily: 'Unica One', fontWeight: 'normal'}}>Sign In</Text>
+            <TextInput
+              ref={(refObj: TextInputField) => {
+                this.formRef.loginId = refObj
+              }}
+              style={[SignInStyle.textInput, {marginTop: 64}]}
+              placeholder='Email address'
+              onChangeText={this.onChangeLoginIdTextinput}
+              value={loginId}
+              maxLength={100}
+              returnKeyType='next'
+              returnKeyLabel='Next'
+              keyboardType='email-address'
+              blurOnSubmit={false}
+              onSubmitEditing={this.focusNextField(this.formRef.password)}
+            />
+            <View style={SignInStyle.textInputUnderline} />
+            <Text style={{height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.LoginId)}</Text>
+            <TextInput
+              ref={(refObj: TextInputField) => {
+                this.formRef.password = refObj
+              }}
+              style={[SignInStyle.textInput, {marginTop: 48}]}
+              placeholder='Password'
+              secureTextEntry={true}
+              onChangeText={this.onChangePWDTextinput}
+              value={password}
+              maxLength={255}
+              returnKeyType='done'
+              returnKeyLabel='Done'
+              onSubmitEditing={this.onSignIn}
+              blurOnSubmit={true}
+            />
+            <View style={SignInStyle.textInputUnderline} />
+            <Text style={{ height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.Password)}</Text>
+            <CustomButton disabled={false} buttonStyle={{marginTop: 64}} title='Sign In' onPressAction={this.onSignIn} />
+          </View>
+          <View style={SignInStyle.signInWithContainer}>
+            <Text style={SignInStyle.signInWithTitle}>Sign In With</Text>
+            <View style={SignInStyle.socialLoginContainer} >
+              <SocialLoginButtonComponent buttonId={SocialLogin.Facebook} title='Facebook' icon={require('../res/images/facebook.png')} onButtonAction={this.onSocialLogin}/>
+              <SocialLoginButtonComponent buttonId={SocialLogin.Google} title='Google' icon={require('../res/images/google.png')} onButtonAction={this.onSocialLogin}/>
+              <SocialLoginButtonComponent buttonId={SocialLogin.Twitter} title='Twitter' icon={require('../res/images/twitter.png')} onButtonAction={this.onSocialLogin}/>
+            </View>
+          </View>
+          <View style={SignInStyle.signUpActionContainer}>
+            <TouchableHighlight
+              style={{ width: 50, height: 56, justifyContent: 'center', alignItems: 'center'}}
+              onPress={() =>{alert('message')}}
+              underlayColor='#FFFFFF00'
+            >
+              <Image style={{height: 24, width: 24}} source={require('../res/images/icon__switch_page_normal.svg')} />
+            </TouchableHighlight>
+            <View style={{ flex: 1, height: 56, justifyContent: 'center', alignItems: 'center'}} >
+              <Text style={{color: '#FFFFFF'}}>SignUpActionContainer</Text>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
       </View>
-      </View>
-    </KeyboardAwareScrollView>
     )
   }
 }
