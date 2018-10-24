@@ -1,0 +1,4 @@
+export const screenName = {
+  SIGN_IN: 'SIGN_IN',
+  SIGN_IN_ACTION_RESPONSE: 'SIGN_IN_ACTION_RESPONSE'
+}
