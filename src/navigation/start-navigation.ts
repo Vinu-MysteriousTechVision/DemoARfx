@@ -21,7 +21,8 @@ export const startNavigation = (isAuthenticated: boolean) => {
                 }],
                 options: {
                   bottomTab: {
-                    text: 'Feed'
+                    text: 'Feed',
+                    icon: require('../res/images/drawer/menuItemIcon.png')
                   }
                 }
               }
@@ -35,6 +36,7 @@ export const startNavigation = (isAuthenticated: boolean) => {
                 options: {
                   bottomTab: {
                     text: 'Home',
+                    icon: require('../res/images/drawer/menuItemIcon.png'),
                     selectedTextColor: 'red'
                   }
                 }
