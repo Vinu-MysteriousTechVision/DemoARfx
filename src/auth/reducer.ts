@@ -1,6 +1,7 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers'
 import { actions } from './actions'
-// NOTE: Below are just an example.
+
+import { INetworkState } from '@src/entities'
 
 export interface State {
   /*
@@ -8,10 +9,12 @@ export interface State {
    * For the initial development userStatus consider as number
    */
   userStatus: number
+  isConnected: boolean
 }
 
 const initialState: State = {
-  userStatus: 0
+  userStatus: 0,
+  isConnected: true
 }
 
 /*
@@ -22,6 +25,15 @@ const onSubmitSignInHandler = (state: State, payload: {}): State => ({
   userStatus: 1
 })
 
+const connectionStateHandler = (state: State, payload: INetworkState): State => {
+  return {
+    ...state,
+    isConnected: payload.status
+  }
+}
+
+
 export const reducer = reducerWithInitialState(initialState)
   .case(actions.onSubmitSignIn, onSubmitSignInHandler)
+  .case(actions.connectionState, connectionStateHandler)
   .build()

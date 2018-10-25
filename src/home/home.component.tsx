@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import { Text, View } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 
-import { screenName } from '@src/navigation'
 import { ButtonIdEnum, setCustomTopBar } from '@src/utils/navigationController'
 
 export interface IHomeComponentStateProps {
-  userStatus: number
+  isOpened: boolean
 }
 
 // NOTE: Component must not know what will happen when button pressed.
@@ -27,31 +26,14 @@ export class Home extends React.Component<IHomeProps, any> {
   constructor(props: IHomeProps) {
     super(props)
     this.state = {}
-    Navigation.events().registerComponentDidAppearListener(({componentId, componentName}: any) => {
-        if (screenName.DRAWER === componentName) {
-          Home.isDrawerOpened = true
-        } else if (screenName.HOME === componentName) {
-          Home.isDrawerOpened = false
-        }
-      },
-    )
-
-    Navigation.events().registerComponentDidDisappearListener(({componentId, componentName}: any) => {
-        if (screenName.DRAWER === componentName) {
-          Home.isDrawerOpened = false
-        }
-      },
-    )
-
     Navigation.events().bindComponent(this)
   }
 
   navigationButtonPressed({ buttonId }: any) {
-    this.props.onTapOnNavigationButton(Home.isDrawerOpened)
+    this.props.onTapOnNavigationButton(this.props.isOpened)
   }
 
   public render() {
-    const { userStatus } = this.props
     return (
       <View style={{ flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center' }}>
         <Text>Home Screen</Text>

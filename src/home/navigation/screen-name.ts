@@ -1,4 +1,5 @@
 export const screenName = {
   HOME: 'HOME',
-  FEED: 'FEED'
+  FEED: 'FEED',
+  ROOT: 'ROOT'
 }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Text, View, Alert } from 'react-native'
+import { Text, View } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 
-import { screenName } from '@src/navigation'
 import { ButtonIdEnum, setCustomTopBar } from '@src/utils/navigationController'
 
+import {RootContainer} from './root'
+
 export interface IFeedComponentStateProps {
-  userStatus: number
+  isOpened: boolean
 }
 
 // NOTE: Component must not know what will happen when button pressed.
@@ -22,64 +23,24 @@ export class Feed extends React.Component<IFeedProps, any> {
     return setCustomTopBar(ButtonIdEnum.Menu, 'Discover')
   }
 
-  private static isDrawerOpened: boolean = true
+  private static isDrawerOpened: boolean = false
 
   constructor(props: IFeedProps) {
     super(props)
     this.state = {}
-    Navigation.events().registerComponentDidAppearListener(({componentId, componentName}: any) => {
-        if (screenName.DRAWER === componentName) {
-          Feed.isDrawerOpened = true
-        } else if (screenName.Feed === componentName) {
-          Feed.isDrawerOpened = false
-        }
-      },
-    )
-
-    Navigation.events().registerComponentDidDisappearListener(({componentId, componentName}: any) => {
-        if (screenName.DRAWER === componentName) {
-          Feed.isDrawerOpened = false
-        }
-      }
-    )
     Navigation.events().bindComponent(this)
   }
 
-  componentDidAppear() {
-    Navigation.showModal({
-      stack: {
-        children: [{
-          component: {
-            name: 'SIGN_IN',
-            passProps: {
-              text: 'stack with one child',
-            },
-            options: {
-              layout: {
-                backgroundColor: 'transparent'
-              },
-              modalPresentationStyle: 'overCurrentContext',
-              topBar: {
-                title: {
-                  text: 'Modal'
-                }
-              }
-            }
-          }
-        }]
-      }
-    })
-
-  }
+  componentDidAppear() {}
 
   navigationButtonPressed({ buttonId }: any) {
-    this.props.onTapOnNavigationButton(Feed.isDrawerOpened)
+    this.props.onTapOnNavigationButton(this.props.isOpened)
   }
 
   public render() {
-    const { userStatus } = this.props
     return (
       <View style={{ flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center' }}>
+        <RootContainer/>
         <Text>Feed Screen</Text>
       </View>
     )

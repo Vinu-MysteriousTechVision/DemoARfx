@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import {
-  // Image,
   Keyboard,
-  StatusBar,
+  NetInfo,
   Text,
   TextInput,
   TextInputProperties,
@@ -27,6 +26,7 @@ export interface ISignInComponentStateProps {}
 export interface ISignInComponentDispatchProps {
   onSignInAction: (loginId: string, password: string) => void
   onSocialLoginAction: (socialLoginId: SocialLogin) => void
+  networkConnectionStatus: (isConnected: boolean) => void
 }
 
 interface ISignInProps extends ISignInComponentStateProps, ISignInComponentDispatchProps {
@@ -99,7 +99,28 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
     Navigation.dismissModal(this.props.componentId);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    try {
+      NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange)
+      NetInfo.isConnected.fetch().then((isConnected: any) => {
+        this.props.networkConnectionStatus(isConnected)
+      })
+    } catch (error) {
+      /* Empty */
+    }
+  }
+
+  public componentWillUnmount() {
+    try {
+      NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange)
+    } catch (error) {
+      /* Empty */
+    }
+  }
+
+  public handleConnectivityChange = (isConnected: any) => {
+    this.props.networkConnectionStatus(isConnected)
+  }
 
   private isAllFormFieldValid = (loginId: string, password: string): boolean => {
     // NOTE Check the presence of login Id and password in the field
@@ -240,7 +261,7 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
             loginId: '',
             password: ''
           }
-        })    
+        })
       }
     }
   }
@@ -255,7 +276,6 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
 
     return (
       <View style={SignInStyle.container}>
-        {/* <StatusBar backgroundColor='#1A2A39' barStyle='light-content'/> */}
         <View style={{ backgroundColor: '#FFFFFF', height: Utils.getStatusBarHeight()}}/>
         <KeyboardAwareScrollView
           scrollEnabled={true}

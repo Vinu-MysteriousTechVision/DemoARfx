@@ -27,6 +27,9 @@ const mapStateToProps: MapStateToProps<ISignInComponentStateProps, OwnProps, Roo
 
 // NOTE: dispatch Redux action from component's event. e.g. `onPress: dispatch(actions.submit({}))`
 const mapDispatchToProps: MapDispatchToProps<ISignInComponentDispatchProps, OwnProps> = (dispatch: Dispatch<Action>, ownProps: OwnProps) => ({
+  networkConnectionStatus: (isConnected: boolean) => {
+    dispatch(actions.connectionState({ status: isConnected }))
+  },
   onSignInAction: (loginId: string, password: string) => {
     dispatch(actions.loginRequest(loginId, password))
   },

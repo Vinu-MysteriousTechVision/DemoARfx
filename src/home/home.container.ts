@@ -18,9 +18,9 @@ interface OwnProps {
 
 // NOTE: get required value for this screen from Redux's State, and map it to the interface Component wants.
 const mapStateToProps: MapStateToProps<IHomeComponentStateProps, OwnProps, RootState> = (state: RootState, ownProps: OwnProps) => {
-  const { userStatus } = state.home
+  const { isOpened } = state.drawer
   return {
-    userStatus,
+    isOpened
   }
 }
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {
-  // Image,
   Text,
   TextInput,
   TextInputProperties,
@@ -12,7 +11,6 @@ import { Navigation } from 'react-native-navigation'
 import Image from 'react-native-remote-svg'
 
 import {CustomButton} from '../commonScreens/custom.ButtonComponent'
-import { SocialLogin } from '../constants'
 import {SignInStyle} from './style'
 
 export interface ISignInActionResponseComponentStateProps {}
@@ -57,7 +55,6 @@ export class SignInActionResponse extends React.Component<ISignInActionResponseP
   }
 
   closePage = () => {
-    // alert('closeModal')
     Navigation.dismissModal(this.props.componentId);
   }
 

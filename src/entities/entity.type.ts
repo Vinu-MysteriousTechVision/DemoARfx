@@ -1,3 +1,7 @@
+export interface IARfxError {
+  message: string
+  code: number
+}
 
 export interface IServerError {
   code: number
