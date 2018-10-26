@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import {
   Keyboard,
   NetInfo,
+  SafeAreaView,
+  StatusBar,
   Text,
   TextInput,
   TextInputProperties,
@@ -20,6 +22,7 @@ import {isValidEmail, isValidPassword} from '../utils/validator'
 import {SignInStyle} from './style'
 
 import TextInputState from 'TextInputState'
+import { screenName } from '../navigation';
 
 export interface ISignInComponentStateProps {}
 
@@ -271,87 +274,112 @@ export class SignIn extends React.Component<ISignInProps, ILoginState> {
     onSocialLoginAction(id)
   }
 
+  private onSignUp = () => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: screenName.HOME,
+        passProps: {
+          text: 'Pushed screen'
+        },
+        options: {
+          topBar: {
+            title: {
+              text: 'Pushed screen title'
+            }
+          }
+        }
+      }
+    })
+  }
+
   public render() {
     const { loginId, password } = this.state.form
 
     return (
       <View style={SignInStyle.container}>
-        <View style={{ backgroundColor: '#FFFFFF', height: Utils.getStatusBarHeight()}}/>
-        <KeyboardAwareScrollView
-          scrollEnabled={true}
-          enableAutomaticScroll={true}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ alignItems: 'center' }}
-          keyboardShouldPersistTaps={'always'}
-          enableOnAndroid={true}
-        >
-          <View style={SignInStyle.signInFormContainer}>
-            <Text style={{fontSize: 24, color: '#474746', fontFamily: 'Unica One', fontWeight: 'normal'}}>Sign In</Text>
-            <TextInput
-              ref={(refObj: TextInputField) => {
-                this.formRef.loginId = refObj
-              }}
-              style={[SignInStyle.textInput, {marginTop: 64}]}
-              placeholder='Email address'
-              onChangeText={this.onChangeLoginIdTextinput}
-              value={loginId}
-              maxLength={100}
-              returnKeyType='next'
-              returnKeyLabel='Next'
-              keyboardType='email-address'
-              blurOnSubmit={false}
-              onSubmitEditing={this.focusNextField(this.formRef.password)}
-            />
-            <View style={SignInStyle.textInputUnderline} />
-            <Text style={{height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.LoginId)}</Text>
-            <TextInput
-              ref={(refObj: TextInputField) => {
-                this.formRef.password = refObj
-              }}
-              style={[SignInStyle.textInput, {marginTop: 48}]}
-              placeholder='Password'
-              secureTextEntry={true}
-              onChangeText={this.onChangePWDTextinput}
-              value={password}
-              maxLength={255}
-              returnKeyType='done'
-              returnKeyLabel='Done'
-              onSubmitEditing={this.onSignIn}
-              blurOnSubmit={true}
-            />
-            <View style={SignInStyle.textInputUnderline} />
-            <Text style={{ height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.Password)}</Text>
-            <CustomButton disabled={false} buttonStyle={{marginTop: 64}} title='Sign In' onPressAction={this.onSignIn} />
-            <Text style={{ height: 30, alignSelf: 'flex-start', color: '#4086D6', marginTop: 16, fontSize: 14, fontFamily: 'Roboto-Regular'}}>Forgot password</Text>
-          </View>
-          <View style={SignInStyle.signInWithContainer}>
-            <Text style={SignInStyle.signInWithTitle}>Sign In With</Text>
-            <View style={SignInStyle.socialLoginContainer} >
-              <SocialLoginButtonComponent buttonId={SocialLogin.Facebook} title='Facebook' icon={require('../res/images/facebook.png')} onButtonAction={this.onSocialLogin}/>
-              <SocialLoginButtonComponent buttonId={SocialLogin.Google} title='Google' icon={require('../res/images/google.png')} onButtonAction={this.onSocialLogin}/>
-              <SocialLoginButtonComponent buttonId={SocialLogin.Twitter} title='Twitter' icon={require('../res/images/twitter.png')} onButtonAction={this.onSocialLogin}/>
-            </View>
-          </View>
-          <View style={SignInStyle.signUpActionContainer}>
-            <TouchableHighlight
-              style={{ width: 50, height: 56, justifyContent: 'center', alignItems: 'center'}}
-              onPress={() =>{alert('message')}}
-              underlayColor='#FFFFFF00'
-            >
-              <Image style={{height: 24, width: 24}} source={require('../res/images/icon__switch_page_normal.svg')} />
-            </TouchableHighlight>
-            <View style={{ flex: 1, height: 56, justifyContent: 'center', alignItems: 'center'}} >
-              <Text style={{color: '#FFFFFF'}}>SignUpActionContainer</Text>
-            </View>
-          </View>
-          <TouchableHighlight 
-            style={{position: 'absolute', top: 16, right: 16,  height: 24, width: 24}}
-            onPress={this.closePage}
-            underlayColor= '#FFFFFF00'
+        <StatusBar translucent={true} backgroundColor='#FFFFFF' barStyle='dark-content'/>
+        <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+          <KeyboardAwareScrollView
+            scrollEnabled={true}
+            enableAutomaticScroll={true}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={[SignInStyle.scrollViewLayout]}
+            keyboardShouldPersistTaps={'always'}
+            enableOnAndroid={true}
           >
-            <Image style={{height: 24, width: 24}} source={require('../res/images/icon__close_normal.svg')} />
-          </TouchableHighlight>
-        </KeyboardAwareScrollView>
+            <View style={{flex: 1, backgroundColor: '#FFF'}}>
+              <View style={SignInStyle.signInFormContainer}>
+                <Text style={{fontSize: 24, color: '#474746', fontFamily: 'Unica One', fontWeight: 'normal'}}>Sign In</Text>
+                <TextInput
+                  ref={(refObj: TextInputField) => {
+                    this.formRef.loginId = refObj
+                  }}
+                  style={[SignInStyle.textInput, {marginTop: 64}]}
+                  placeholder='Email address'
+                  onChangeText={this.onChangeLoginIdTextinput}
+                  value={loginId}
+                  maxLength={100}
+                  returnKeyType='next'
+                  returnKeyLabel='Next'
+                  keyboardType='email-address'
+                  blurOnSubmit={false}
+                  onSubmitEditing={this.focusNextField(this.formRef.password)}
+                />
+                <View style={SignInStyle.textInputUnderline} />
+                <Text style={{height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.LoginId)}</Text>
+                <TextInput
+                  ref={(refObj: TextInputField) => {
+                    this.formRef.password = refObj
+                  }}
+                  style={[SignInStyle.textInput, {marginTop: 48}]}
+                  placeholder='Password'
+                  secureTextEntry={true}
+                  onChangeText={this.onChangePWDTextinput}
+                  value={password}
+                  maxLength={255}
+                  returnKeyType='done'
+                  returnKeyLabel='Done'
+                  onSubmitEditing={this.onSignIn}
+                  blurOnSubmit={true}
+                />
+                <View style={SignInStyle.textInputUnderline} />
+                <Text style={{ height: 30, alignSelf: 'flex-start', color: 'red', paddingTop: 10}}>{this.getValidateMessage(FormField.Password)}</Text>
+                <CustomButton disabled={false} buttonStyle={{marginTop: 64}} title='Sign In' onPressAction={this.onSignIn} />
+                <Text style={{ height: 30, alignSelf: 'flex-start', color: '#4086D6', marginTop: 16, fontSize: 14, fontFamily: 'Roboto-Regular'}}>Forgot password</Text>
+              </View>
+              <View style={{justifyContent: 'flex-end'}}>
+                <View style={SignInStyle.signInWithContainer}>
+                  <Text style={SignInStyle.signInWithTitle}>Sign In With</Text>
+                  <View style={SignInStyle.socialLoginContainer} >
+                    <SocialLoginButtonComponent buttonId={SocialLogin.Facebook} title='Facebook' icon={require('../res/images/facebook.png')} onButtonAction={this.onSocialLogin}/>
+                    <SocialLoginButtonComponent buttonId={SocialLogin.Google} title='Google' icon={require('../res/images/google.png')} onButtonAction={this.onSocialLogin}/>
+                    <SocialLoginButtonComponent buttonId={SocialLogin.Twitter} title='Twitter' icon={require('../res/images/twitter.png')} onButtonAction={this.onSocialLogin}/>
+                  </View>
+                </View>
+                <View style={SignInStyle.signUpActionContainer}>
+                  <TouchableHighlight
+                    style={{ width: 50, height: 56, justifyContent: 'center', alignItems: 'center'}}
+                    onPress={this.onSignUp}
+                    underlayColor='#FFFFFF00'
+                  >
+                    <Image style={{height: 24, width: 24}} source={require('../res/images/icon__switch_page_normal.svg')} />
+                  </TouchableHighlight>
+                  <View style={{ flex: 1, height: 56, justifyContent: 'center', alignItems: 'center'}} >
+                    <Text style={{color: '#FFFFFF'}}>SignUpActionContainer</Text>
+                  </View>
+                </View>
+              </View>
+              <TouchableHighlight 
+                style={{position: 'absolute', top: 16, right: 16,  height: 24, width: 24}}
+                onPress={this.closePage}
+                underlayColor= '#FFFFFF00'
+              >
+                <Image style={{height: 24, width: 24}} source={require('../res/images/icon__close_normal.svg')} />
+              </TouchableHighlight>
+
+            </View>
+          </KeyboardAwareScrollView>
+        </SafeAreaView>
       </View>
     )
   }

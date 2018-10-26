@@ -9,15 +9,17 @@ export const SignInStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FFFFFF'
     },
+    scrollViewLayout: {
+        backgroundColor: 'transparent'
+    },
     signInFormContainer: {
-        flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingTop: (64 - Utils.getStatusBarHeight()),
         marginHorizontal: 48
     },
     signInWithContainer: {
-        width: (windowWidth - 128)
+        marginHorizontal: 64
     },
     signInWithTitle: {
         alignSelf: 'center',
